@@ -1,0 +1,98 @@
+//******************************************************************************
+// This section is the main page of the HTML and the first chapter in LaTeX.
+//******************************************************************************
+
+/**
+ * \mainpage Overview
+ *
+ * \section overview Overview
+ * Assignment 2 focuses on implementation of the Map ADT using a binary tree
+ * implementation. Different from the class however, you will be implementing a
+ * map extremely similar to the c++ stl map. As such, remember to look
+ * <a href="http://www.cplusplus.com/reference/map/map">here</a> if you are
+ * confused on how certain operations are performed before posting a question to
+ * piazza.
+ *
+ * Essentially, this assignment mainly focuses on implementation, but you must
+ * turn in a report as well. The report focuses on analyzing Big-Oh and
+ * performance of MySTL::map.
+ *
+ * If you have questions, or if something is unclear, please post on piazza.
+ *
+ * \section Programming Assignment
+ * In this assignment, you need to implement all items which can be found under
+ * <a href="todo.html">todos</a>, which is essentially all variants of find
+ * operations, insert operations, erase operations, and finishing the
+ * implementation for the node classes constructor and destructor.
+ * You should also think about a good order to implement them in. I recommend:
+ * - finder
+ * - inserter
+ * - Element access operations
+ * - etc in any order
+ * - balancing
+ *
+ * After completing, feel free to remove each doxygen todo statement from the
+ * code, this way you can keep track!
+ *
+ * Unit testing is provided to aid you in determining if your implementation is
+ * correct, however, note the tests are not exhaustive! If all tests are
+ * reported to pass, this is only part of the process. If you are not convinced
+ * your code is correct, please add more tests.
+ *
+ * \section Balancing
+ * Implement AVL tree i.e., a balanced tree. To achieve this you need to implement
+ * two helper utility of AVL trees rebalance and restructure and call rebalance on
+ * corresponding nodes to restore balance after insert and delete.
+ * Augment your experiments and theoretical analysis to show how AVL tree performs
+ * equally on the data sets in the regular assignment.
+ *
+ * \section Code (Checkpoint)
+ * For <b>Code Checkpoint</b> you should complete the implementation of the helper functions
+ * in map.h file: <b><i>finder, inserter</i></b> and the <b><i>element access operator []</i></b>.
+ * These are helper functions which are
+ * essential in completing other functions in map.h. Make sure your code compiles for the
+ * code checkpoint. You do not need to pass any tests for the code checkpoint as the tests
+ * will be failing until you implement the access functions tested in the test_map.cpp.
+ *
+ * \section Report
+ * Your report will include the objective of the assignment, a brief description
+ * of your implementation and experiments, and discussion of your results. At a
+ * minimum, your report should include the following sections:
+ * - <b>Introduction</b>. In this section, state or describe the objective of
+ *   the assignment, a statement about what you learned in the assignment, and a
+ *   statement summarizing your results.
+ * - <b>Implementation details</b>. Give a brief description of how you
+ *   implemented the assignment, including what you learned.
+ * - <b>Theoretical analysis</b>. In this section, you should provide an
+ *   analysis of and theoretical discussion (i.e Big-Oh) for inserting a new
+ *   element into your map. Please provide best, average, and worst case
+ *   analysis and discuss when they occur.
+ * - <b>Experimental Setup</b>. In this section, you should provide a
+ *   description of your experiment setup, which includes but is not limited to
+ *   Machine specification, i.e., processor type, amount of ram, OS, etc.
+ * - <b>Results & Discussion</b>. In this section, you will experiment to
+ *   perform n insert operations on an initially empty map. You will compare
+ *   orderings of data including linear tree structure, complete tree structure,
+ *   and randomized data. timing.cpp is already setup to generate all data you
+ *   will need in your base experiments. Include and discuss the following
+ *   plots:
+ *     -# Plot input size vs. time / input size, i.e., amortized time on map
+ *     insertion for each of the data sequences.
+ *     -# Plot input size vs. (time / input size)/expected time for the three
+ *     operations and determine the Big-Oh constants of an insert operation.
+ *   For operations which take O(n^2) test the following input sizes: 2^1, ...,
+ *   2^15. For operations which take O(log n) test the following input sizes:
+ *   2^1, ..., 2^20 (use what is setup for you in timing.cpp).
+ *
+ *   For plot discussions think of this: what is presented in each plot (i.e.,
+ *   explain the data), what conclusion to do see from the data (i.e., learn
+ *   from the data), and connect the data back to your theoretical discussion.
+ * - <b>Conclusion</b>. Summarize the results found in the experiment.
+ *
+ * \section components Code Components
+ * - \ref MySTL - Core library containers, i.e., map.
+ *
+ * - \ref Testing - Classes and utilities for unit testing MySTL.
+ *
+ * - \ref timing.cpp - File to use for timing experiments for report.
+ **/
