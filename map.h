@@ -250,9 +250,12 @@ class map {
     ///         inserted
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
-    node* finder(const Key& k) const {
+    node* finder(const Key& k, map_iterator i) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
       /// @todo Implement finder helper function
-      return nullptr;
+      if(i.is_external()) return i;
+      if(k < v->key()) return finder(k, v.left());
+      else if (v->key() < k) return finder(k, v.right());
+      else return v;
     }
 
     /// @brief Utility for inserting a new node into the data structure.
@@ -584,8 +587,6 @@ class map {
     };
 
     ////////////////////////////////////////////////////////////////////////////
-    /// @brief Bidirectional iterator for a linked binary tree
-    /// @tparam U value_type of map
     ////////////////////////////////////////////////////////////////////////////
     template<typename U>
       class map_iterator : public std::iterator<std::bidirectional_iterator_tag, U> {
