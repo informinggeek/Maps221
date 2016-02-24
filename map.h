@@ -366,6 +366,7 @@ class map {
       /// @brief Destructor
       ~node() {
         /// @todo Implement node destructor
+        delete this; 
       }
 
       /// @}
