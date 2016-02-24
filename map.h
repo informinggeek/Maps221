@@ -295,6 +295,23 @@ class map {
     /// node::replace, and node::remove_above_external
     node* eraser(node* n) {
       /// @todo Implement eraser helper function
+      node* w;
+      if(n->left()->is_external())
+        w = n->left();
+      else if(n->right()->is_external())
+        w = n->right();
+      else
+      {
+        w = n->right();
+        do{
+          w = n->left();
+          }while(w->is_internal());
+          node* u = w.parent();
+          n->setKey(u->key());
+          n->setValue(u->value());
+      }
+      n--;
+      T.remove_above_external(w);
       return nullptr;
     }
 
