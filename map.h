@@ -282,6 +282,7 @@ class map {
       expandExternal(v);
       v->setKey(k);
       v->setValue(v);
+      sz++;			// increase size by 1
       return std::make_pair(v, exists);
     }
 
