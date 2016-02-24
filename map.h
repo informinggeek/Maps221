@@ -213,7 +213,9 @@ class map {
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
       /// @todo Implement find. Utilize the finder helper.
-      return end();
+      node* v = finder(k, root);
+      if(v->is_internal()) return iterator(v);
+      else return end();
     }
 
     /// @brief Search the container for an element with key \c k
@@ -250,11 +252,11 @@ class map {
     ///         inserted
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
-    node* finder(const Key& k, iterator v) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
+    node* finder(const Key& k, node* v) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
       /// @todo Implement finder helper function
       if(v->is_external()) return v;
-      if(k < v->key()) return finder(k, v.left());
-      else if (v->key() < k) return finder(k, v.right());
+      if(k < v->value.first) return finder(k, v->left);
+      else if (v->value.first < k) return finder(k, v->right);
       else return v;
     }
 
@@ -273,15 +275,15 @@ class map {
     std::pair<node*, bool> inserter(const Key& k, const value_type& v) {		// *** Added key as an argument ***
       /// @todo Implement inserter helper function
       bool exists = true;
-      iterator v = finder(k, root);
-      if (v->is_internal()) exists = false; 
-      while (v->is_internal())
+      iterator i = finder(k, root);
+      if (i->is_internal()) exists = false; 
+      while (i->is_internal())
       {
-	v = finder(k, v.right());
+	i = finder(k, v.right());
       }
       expandExternal(v);
-      v->setKey(k);
-      v->setValue(v);
+      i->setKey(k);
+      i->setValue(v);
       sz++;			// increase size by 1
       return std::make_pair(v, exists);
     }
@@ -312,7 +314,7 @@ class map {
           n->setValue(u->value());
       }
       n--;
-      T.remove_above_external(w);
+      remove_above_external(w);
       return nullptr;
     }
 
