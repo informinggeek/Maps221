@@ -250,9 +250,9 @@ class map {
     ///         inserted
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
-    node* finder(const Key& k, map_iterator i) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
+    node* finder(const Key& k, iterator v) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
       /// @todo Implement finder helper function
-      if(i.is_external()) return i;
+      if(v->is_external()) return v;
       if(k < v->key()) return finder(k, v.left());
       else if (v->key() < k) return finder(k, v.right());
       else return v;
@@ -270,9 +270,19 @@ class map {
     /// Base you algorithm off of Code Fragment 10.10 on page 436
     ///
     /// Hint: Will need to use functions node::replace and node::expand
-    std::pair<node*, bool> inserter(const value_type& v) {
+    std::pair<node*, bool> inserter(const Key& k, const value_type& v) {		// *** Added key as an argument ***
       /// @todo Implement inserter helper function
-      return std::make_pair(nullptr, false);
+      bool exists = true;
+      iterator v = finder(k, root);
+      if (v->is_internal()) exists = false; 
+      while (v->is_internal())
+      {
+	v = finder(k, v.right());
+      }
+      expandExternal(v);
+      v->setKey(k);
+      v->setValue(v);
+      return std::make_pair(v, exists);
     }
 
     /// @brief Erase a node from the tree
