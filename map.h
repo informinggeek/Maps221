@@ -176,6 +176,7 @@ class map {
     /// store unique elements, so if the element existed already it is returned.
     std::pair<iterator, bool> insert(const value_type& v) {
       /// @todo Implement insert. Utilize inserter helper.
+      
       return std::make_pair(end(), false);
     }
     /// @brief Remove element at specified position
@@ -272,20 +273,20 @@ class map {
     /// Base you algorithm off of Code Fragment 10.10 on page 436
     ///
     /// Hint: Will need to use functions node::replace and node::expand
-    std::pair<node*, bool> inserter(const Key& k, const value_type& v) {		// *** Added key as an argument ***
+    std::pair<node*, bool> inserter(const value_type& v) {		
       /// @todo Implement inserter helper function
       bool exists = true;
-      iterator i = finder(k, root);
+      node* i = finder(v.first, root);
       if (i->is_internal()) exists = false; 
       while (i->is_internal())
       {
-	i = finder(k, v.right());
+	i = finder(v.first, i->right());
       }
-      expandExternal(v);
-      i->setKey(k);
-      i->setValue(v);
+      expandExternal(i);
+      i->setKey(v.first);
+      i->setValue(v.second);
       sz++;			// increase size by 1
-      return std::make_pair(v, exists);
+      return std::make_pair(i, exists);
     }
 
     /// @brief Erase a node from the tree
