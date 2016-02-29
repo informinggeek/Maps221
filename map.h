@@ -214,8 +214,8 @@ class map {
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
       /// @todo Implement find. Utilize the finder helper.
-      node* v = finder(k, root);
-      if(v->is_internal()) return iterator(v);
+      node* v = finder(k);
+      if(v->is_internal()) return v;
       else return end();
     }
 
@@ -224,7 +224,9 @@ class map {
     /// @return Iterator to position if found, cend() otherwise
     const_iterator find(const Key& k) const {
       /// @todo Implement find. Utilize the finder helper
-      return cend();
+      node* v = finder(k);
+      if(v->is_internal()) return v;
+      else return cend();
     }
 
     /// @brief Count elements with specific keys
@@ -253,12 +255,16 @@ class map {
     ///         inserted
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
-    node* finder(const Key& k, node* v) const {		// *** Added in iterator to arguments; changes will be reflected in test file ***
+    node* finder(const Key& k) const {		
       /// @todo Implement finder helper function
+      node* v=root;
       if(v->is_external()) return v;
-      if(k < v->value.first) return finder(k, v->left);
-      else if (v->value.first < k) return finder(k, v->right);
-      else return v;
+      while(!v->is_external())
+      {
+	if(k < v->value.first) v=v->left;
+        else if (v->value.first < k) v=v->right;
+      }
+      return v;
     }
 
     /// @brief Utility for inserting a new node into the data structure.
@@ -276,15 +282,16 @@ class map {
     std::pair<node*, bool> inserter(const value_type& v) {		
       /// @todo Implement inserter helper function
       bool exists = true;
-      node* i = finder(v.first, root);
+      node* i = finder(v.first);
       if (i->is_internal()) exists = false; 
       while (i->is_internal())
       {
-	i = finder(v.first, i->right());
+	i = finder(v.first);
       }
       expandExternal(i);
-      i->setKey(v.first);
-      i->setValue(v.second);
+     // i->setKey(v.first);
+     // i->setValue(v.second);
+      i->replace(v);
       sz++;			// increase size by 1
       return std::make_pair(i, exists);
     }
@@ -311,8 +318,9 @@ class map {
           w = n->left();
           }while(w->is_internal());
           node* u = w.parent();
-          n->setKey(u->key());
-          n->setValue(u->value());
+          //n->setKey(u->key());
+          //n->setValue(u->value());
+	  n->replace(u);
       }
       n--;
       remove_above_external(w);
