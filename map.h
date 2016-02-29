@@ -130,6 +130,7 @@ class map {
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
       /// @todo implement at function. Utilize inserter function.
+
       return end()->second;
     }
 
@@ -214,9 +215,7 @@ class map {
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
       /// @todo Implement find. Utilize the finder helper.
-      node* v = finder(k, root);
-      if(v->is_internal()) return iterator(v);
-      else return end();
+      return end();
     }
 
     /// @brief Search the container for an element with key \c k
@@ -224,7 +223,7 @@ class map {
     /// @return Iterator to position if found, cend() otherwise
     const_iterator find(const Key& k) const {
       /// @todo Implement find. Utilize the finder helper
-      return cend();
+      cend();
     }
 
     /// @brief Count elements with specific keys
@@ -366,7 +365,7 @@ class map {
       /// @brief Destructor
       ~node() {
         /// @todo Implement node destructor
-        delete this; 
+       // delete this; 
       }
 
       /// @}
