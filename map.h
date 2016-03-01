@@ -131,11 +131,8 @@ class map {
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
       /// @todo implement at function. Utilize inserter function.
-     // std::pair<node*,bool> p = inserter(std::make_pair(k,Value()));
-     // Value &v = p.first->value.second;
-     // return v;
       return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
-    }											// *** The commented out code above it should work as well
+    }
 
     /// @param k Input key
     /// @return Value at given key
@@ -262,23 +259,19 @@ class map {
     node* finder(const Key& k) const {		
       /// @todo Implement finder helper function
       node* v=root;
-      std::cout<<v->value.first<<std::endl;
       if(v->is_external()) return v;
       while(v->is_internal() || k != v->value.first)
       {
-	std::cout<<"Node traversal."<<std::endl;
-	if(k < v->value.first)
+	if (v->is_external()) return v;
+	else if(k < v->value.first)
 	{
-		std::cout<<"Left\n";
 		v=v->left;
 	}
         else if (v->value.first < k)
 	{
-		std::cout<<"Right\n";
 		v=v->right;				// getting segmentation fault here when m[3] is inserted
 	}
 	else if (v->value.first == k) return v;
-	else if (v->is_external()) return v;
       }
       return v;
     }

@@ -56,6 +56,7 @@ class map_test : public test_class {
 
     /// @brief Setup map of integers to strings
     void setup_dummy_map(map<int, string>& m) {
+      std::cout<<"Dummy_map setup begun.\n";
       m[3] = "l";
       m[1] = "H";
       m[2] = "e";
@@ -69,12 +70,19 @@ class map_test : public test_class {
 
       assert_msg(m.size() == 0 && m.empty(),
           "Default construction failed.");
+      std::cout<<"Map constructed successfully.\n";
     }
 
     /// @brief Test element access operator when element exists
     void test_element_access_operator_exists() {
       map<int, string> m;
       setup_dummy_map(m);
+
+      std::cout<<"The value at m[3] is "<<m[3]<<".\n";
+      std::cout<<"The value at m[1] is "<<m[1]<<".\n";
+      std::cout<<"The value at m[2] is "<<m[2]<<".\n";
+      std::cout<<"The value at m[5] is "<<m[5]<<".\n";
+      std::cout<<"The value at m[4] is "<<m[4]<<".\n";
 
       string val = m[5];
 
