@@ -1,6 +1,7 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+#include <iostream>
 #include <iterator>
 #include <stdexcept>
 #include <type_traits>
@@ -130,9 +131,17 @@ class map {
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
       /// @todo implement at function. Utilize inserter function.
+<<<<<<< HEAD
 
       return end()->second;
     }
+=======
+     // std::pair<node*,bool> p = inserter(std::make_pair(k,Value()));
+     // Value &v = p.first->value.second;
+     // return v;
+      return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
+    }											// *** The commented out code above it should work as well
+>>>>>>> origin/master
 
     /// @param k Input key
     /// @return Value at given key
@@ -219,7 +228,7 @@ class map {
       return end();
 =======
       node* v = finder(k);
-      if(v->is_internal()) return v;
+      if(v->is_internal()) return iterator(v);
       else return end();
 >>>>>>> origin/master
     }
@@ -230,9 +239,13 @@ class map {
     const_iterator find(const Key& k) const {
       /// @todo Implement find. Utilize the finder helper
 <<<<<<< HEAD
+<<<<<<< HEAD
       cend();
 =======
       node* v = finder(k);
+=======
+      const_iterator v = finder(k);
+>>>>>>> origin/master
       if(v->is_internal()) return v;
       else return cend();
 >>>>>>> origin/master
@@ -268,8 +281,9 @@ class map {
       /// @todo Implement finder helper function
       node* v=root;
       if(v->is_external()) return v;
-      while(!v->is_external())
+      while(!v->is_external())				// *** Here is where it hits the infinite loop *** //
       {
+	std::cout<<"Test"<<std::endl;
 	if(k < v->value.first) v=v->left;
         else if (v->value.first < k) v=v->right;
       }
@@ -290,19 +304,12 @@ class map {
     /// Hint: Will need to use functions node::replace and node::expand
     std::pair<node*, bool> inserter(const value_type& v) {		
       /// @todo Implement inserter helper function
-      bool exists = true;
       node* i = finder(v.first);
-      if (i->is_internal()) exists = false; 
-      while (i->is_internal())
-      {
-	i = finder(v.first);
-      }
-      expandExternal(i);
-     // i->setKey(v.first);
-     // i->setValue(v.second);
+      if (i->is_internal()) return std::make_pair(i,false); 
+      i->expand();
       i->replace(v);
       sz++;			// increase size by 1
-      return std::make_pair(i, exists);
+      return std::make_pair(i, true);
     }
 
     /// @brief Erase a node from the tree
@@ -331,7 +338,7 @@ class map {
           //n->setValue(u->value());
 	  n->replace(u);
       }
-      n--;
+      sz--;
       remove_above_external(w);
       return nullptr;
     }
