@@ -262,12 +262,23 @@ class map {
     node* finder(const Key& k) const {		
       /// @todo Implement finder helper function
       node* v=root;
+      std::cout<<v->value.first<<std::endl;
       if(v->is_external()) return v;
-      while(!v->is_external())				// *** Here is where it hits the infinite loop *** //
+      while(v->is_internal() || k != v->value.first)
       {
-	std::cout<<"Test"<<std::endl;
-	if(k < v->value.first) v=v->left;
-        else if (v->value.first < k) v=v->right;
+	std::cout<<"Node traversal."<<std::endl;
+	if(k < v->value.first)
+	{
+		std::cout<<"Left\n";
+		v=v->left;
+	}
+        else if (v->value.first < k)
+	{
+		std::cout<<"Right\n";
+		v=v->right;				// getting segmentation fault here when m[3] is inserted
+	}
+	else if (v->value.first == k) return v;
+	else if (v->is_external()) return v;
       }
       return v;
     }
