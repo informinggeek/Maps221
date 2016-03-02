@@ -1,6 +1,0 @@
-test_map.o: test_map.cpp map.h unit_test.h
-timing.o: timing.cpp map.h
-test_map.o: test_map.cpp map.h unit_test.h
-timing.o: timing.cpp map.h
-test_map.o: test_map.cpp map.h unit_test.h
-timing.o: timing.cpp map.h
