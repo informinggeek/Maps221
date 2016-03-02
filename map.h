@@ -130,7 +130,6 @@ class map {
     /// element with that key and return a reference to its mapped value
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
-      /// @todo implement at function. Utilize inserter function.
       return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
     }
 
@@ -214,17 +213,15 @@ class map {
     /// @param k Key
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
-      /// @todo Implement find. Utilize the finder helper.
-      node* v = finder(k);
-      if(v->is_internal()) return iterator(v);
-      else return end();
+      node* v = finder(k);					// utilizes finder helper to locate the key
+      if(v->is_internal()) return iterator(v);			// if the found node is internal, return an iterator to said node
+      else return end();					// otherwise the key does not exist in the map
     }
 
     /// @brief Search the container for an element with key \c k
     /// @param k Key
     /// @return Iterator to position if found, cend() otherwise
-    const_iterator find(const Key& k) const {
-      /// @todo Implement find. Utilize the finder helper
+    const_iterator find(const Key& k) const {			// as above, but const
       const_iterator v = finder(k);
       if(v->is_internal()) return v;
       else return cend();
@@ -257,21 +254,20 @@ class map {
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
     node* finder(const Key& k) const {		
-      /// @todo Implement finder helper function
       node* v=root;
-      if(v->is_external()) return v;
-      while(v->is_internal() || k != v->value.first)
+      if(v->is_external()) return v;				// if the root is external, it is the only node in the tree
+      while(v->is_internal() || k != v->value.first)		// search for k
       {
-	if (v->is_external()) return v;
-	else if(k < v->value.first)
+	if (v->is_external()) return v;				// if v is external, then the key does not exist
+	else if(k < v->value.first)				// if k is less than the current key
 	{
-		v=v->left;
+		v=v->left;					// check the left subtree of v
 	}
-        else if (v->value.first < k)
+        else if (v->value.first < k)				// if k is greater than the current key
 	{
-		v=v->right;				// getting segmentation fault here when m[3] is inserted
+		v=v->right;					// check the right subtree of v
 	}
-	else if (v->value.first == k) return v;
+	else if (v->value.first == k) return v;			// if k is equal to the current key, then we have found k
       }
       return v;
     }
@@ -290,9 +286,9 @@ class map {
     /// Hint: Will need to use functions node::replace and node::expand
     std::pair<node*, bool> inserter(const value_type& v) {		
       /// @todo Implement inserter helper function
-      node* i = finder(v.first);
-      if (i->is_internal()) return std::make_pair(i,false); 
-      i->expand();
+      node* i = finder(v.first);					// find the node or the place the node should be inserted
+      if (i->is_internal()) return std::make_pair(i,false); 		// if i is an internal node, then it already exists
+      i->expand();							// otherwise i is an external nodes, and needs to become an internal node
       i->replace(v);
       sz++;			// increase size by 1
       return std::make_pair(i, true);
