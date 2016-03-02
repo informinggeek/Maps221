@@ -131,17 +131,15 @@ class map {
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
       /// @todo implement at function. Utilize inserter function.
-<<<<<<< HEAD
 
       return end()->second;
     }
-=======
      // std::pair<node*,bool> p = inserter(std::make_pair(k,Value()));
      // Value &v = p.first->value.second;
      // return v;
       return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
     }											// *** The commented out code above it should work as well
->>>>>>> origin/master
+
 
     /// @param k Input key
     /// @return Value at given key
@@ -224,13 +222,10 @@ class map {
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
       /// @todo Implement find. Utilize the finder helper.
-<<<<<<< HEAD
       return end();
-=======
       node* v = finder(k);
       if(v->is_internal()) return iterator(v);
       else return end();
->>>>>>> origin/master
     }
 
     /// @brief Search the container for an element with key \c k
@@ -238,17 +233,11 @@ class map {
     /// @return Iterator to position if found, cend() otherwise
     const_iterator find(const Key& k) const {
       /// @todo Implement find. Utilize the finder helper
-<<<<<<< HEAD
-<<<<<<< HEAD
       cend();
-=======
       node* v = finder(k);
-=======
       const_iterator v = finder(k);
->>>>>>> origin/master
       if(v->is_internal()) return v;
       else return cend();
->>>>>>> origin/master
     }
 
     /// @brief Count elements with specific keys
@@ -283,9 +272,9 @@ class map {
       if(v->is_external()) return v;
       while(!v->is_external())				// *** Here is where it hits the infinite loop *** //
       {
-	std::cout<<"Test"<<std::endl;
-	if(k < v->value.first) v=v->left;
-        else if (v->value.first < k) v=v->right;
+	       std::cout<<"Test"<<std::endl;
+	       if(k < v->value.first) v=v->left;
+         else if (v->value.first < k) v=v->right;
       }
       return v;
     }
