@@ -132,6 +132,25 @@ class map {
     Value& operator[](const Key& k) {
       return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
     }
+<<<<<<< HEAD
+=======
+=======
+      /// @todo implement at function. Utilize inserter function.
+
+      return end()->second;
+    }
+     // std::pair<node*,bool> p = inserter(std::make_pair(k,Value()));
+     // Value &v = p.first->value.second;
+     // return v;
+      return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
+    }											// *** The commented out code above it should work as well
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
+>>>>>>> upstream/master
+>>>>>>> origin/master
+>>>>>>> upstream/master
 
     /// @param k Input key
     /// @return Value at given key
@@ -214,9 +233,21 @@ class map {
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
       /// @todo Implement find. Utilize the finder helper.
+<<<<<<< HEAD
       node* v = finder(k);
       if(v->is_internal()) return iterator(v);
       else return end();
+=======
+      return end();
+      node* v = finder(k);
+      if(v->is_internal()) return iterator(v);
+      else return end();
+<<<<<<< HEAD
+=======
+>>>>>>> origin/master
+>>>>>>> upstream/master
+>>>>>>> origin/master
+>>>>>>> upstream/master
     }
 
     /// @brief Search the container for an element with key \c k
@@ -224,8 +255,20 @@ class map {
     /// @return Iterator to position if found, cend() otherwise
     const_iterator find(const Key& k) const {			// as above, but const
       /// @todo Implement find. Utilize the finder helper
+<<<<<<< HEAD
       node* v = finder(k);
       if(v->is_internal()) return const_iterator(v);
+=======
+      cend();
+      node* v = finder(k);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> upstream/master
+>>>>>>> origin/master
+      const_iterator v = finder(k);
+      if(v->is_internal()) return v;
+>>>>>>> upstream/master
       else return cend();
     }
 
@@ -260,6 +303,11 @@ class map {
       if(v->is_external()) return v;				// if the root is external, it is the only node in the tree
       while(v->is_internal() || k != v->value.first)		// search for k
       {
+<<<<<<< HEAD
+	       std::cout<<"Test"<<std::endl;
+	       if(k < v->value.first) v=v->left;
+         else if (v->value.first < k) v=v->right;
+=======
 	if (v->is_external()) return v;				// if v is external, then the key does not exist
 	else if(k < v->value.first)				// if k is less than the current key
 	{
@@ -270,6 +318,7 @@ class map {
 		v=v->right;					// check the right subtree of v
 	}
 	else if (v->value.first == k) return v;			// if k is equal to the current key, then we have found k
+>>>>>>> origin/master
       }
       return v;
     }
