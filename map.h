@@ -130,25 +130,8 @@ class map {
     /// element with that key and return a reference to its mapped value
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
-<<<<<<< HEAD
-      return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
+      return inserter(std::make_pair(k, Value())).first->value.second;
     }
-=======
-      /// @todo implement at function. Utilize inserter function.
-
-      return end()->second;
-    }
-     // std::pair<node*,bool> p = inserter(std::make_pair(k,Value()));
-     // Value &v = p.first->value.second;
-     // return v;
-      return (*((this->inserter(std::make_pair(k,Value()))).first)).value.second;	// *** This is almost a direct copy out of std::map
-    }											// *** The commented out code above it should work as well
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
->>>>>>> upstream/master
->>>>>>> origin/master
 
     /// @param k Input key
     /// @return Value at given key
@@ -159,8 +142,9 @@ class map {
     /// If \c k is not found in the container, the function throws an
     /// \c out_of_range exception.
     Value& at(const Key& k) {
-      /// @todo implement at function. Utilize find function.
-      return end()->second;
+      iterator i = find(k);
+      if(i == end()) throw std::out_of_range ("Error: key is not in the map");
+      return i->second;
     }
 
     /// @param k Input key
@@ -172,8 +156,9 @@ class map {
     /// If \c k is not found in the container, the function throws an
     /// \c out_of_range exception.
     const Value& at(const Key& k) const {
-      /// @todo implement at function. Utilize find function.
-      return end()->second;
+      iterator i = find(k);
+      if(i == end()) throw std::out_of_range ("Error: key is not in the map");
+      return i->second;
     }
 
     /// @}
@@ -192,9 +177,10 @@ class map {
     /// Insert is the "put(k, v)" function of the Map ADT. Remember that Maps
     /// store unique elements, so if the element existed already it is returned.
     std::pair<iterator, bool> insert(const value_type& v) {
-      /// @todo Implement insert. Utilize inserter helper.
-      
-      return std::make_pair(end(), false);
+      std::pair<node*,bool> n = inserter(v);		// inserts the node if it does not exist, or finds where it is if it does
+      if(n.second == true) return n;			// if the node did not exist, just return the positon/boolean pair
+      n.first->value.second = v.second;			// if the node did exist, change its value to match the new value
+      return n;
     }
     /// @brief Remove element at specified position
     /// @param position Position
@@ -230,40 +216,17 @@ class map {
     /// @param k Key
     /// @return Iterator to position if found, end() otherwise
     iterator find(const Key& k) {
-<<<<<<< HEAD
-      node* v = finder(k);					// utilizes finder helper to locate the key
-      if(v->is_internal()) return iterator(v);			// if the found node is internal, return an iterator to said node
-      else return end();					// otherwise the key does not exist in the map
-=======
-      /// @todo Implement find. Utilize the finder helper.
-      return end();
       node* v = finder(k);
       if(v->is_internal()) return iterator(v);
       else return end();
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
->>>>>>> upstream/master
->>>>>>> origin/master
     }
 
     /// @brief Search the container for an element with key \c k
     /// @param k Key
     /// @return Iterator to position if found, cend() otherwise
-<<<<<<< HEAD
     const_iterator find(const Key& k) const {			// as above, but const
-=======
-    const_iterator find(const Key& k) const {
-      /// @todo Implement find. Utilize the finder helper
-      cend();
       node* v = finder(k);
-<<<<<<< HEAD
-=======
-=======
->>>>>>> upstream/master
->>>>>>> origin/master
-      const_iterator v = finder(k);
-      if(v->is_internal()) return v;
+      if(v->is_internal()) return const_iterator(v);
       else return cend();
     }
 
@@ -294,15 +257,10 @@ class map {
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
     node* finder(const Key& k) const {		
-      node* v=root;
+      node* v=root->left;;
       if(v->is_external()) return v;				// if the root is external, it is the only node in the tree
-      while(v->is_internal() || k != v->value.first)		// search for k
+      while(v->is_internal() && k != v->value.first)		// search for k
       {
-<<<<<<< HEAD
-	       std::cout<<"Test"<<std::endl;
-	       if(k < v->value.first) v=v->left;
-         else if (v->value.first < k) v=v->right;
-=======
 	if (v->is_external()) return v;				// if v is external, then the key does not exist
 	else if(k < v->value.first)				// if k is less than the current key
 	{
@@ -313,7 +271,6 @@ class map {
 		v=v->right;					// check the right subtree of v
 	}
 	else if (v->value.first == k) return v;			// if k is equal to the current key, then we have found k
->>>>>>> origin/master
       }
       return v;
     }
@@ -331,7 +288,6 @@ class map {
     ///
     /// Hint: Will need to use functions node::replace and node::expand
     std::pair<node*, bool> inserter(const value_type& v) {		
-      /// @todo Implement inserter helper function
       node* i = finder(v.first);					// find the node or the place the node should be inserted
       if (i->is_internal()) return std::make_pair(i,false); 		// if i is an internal node, then it already exists
       i->expand();							// otherwise i is an external nodes, and needs to become an internal node
@@ -359,9 +315,9 @@ class map {
       {
         w = n->right();
         do{
-          w = n->left();
+          w = w->left();
           }while(w->is_internal());
-          node* u = w.parent();
+          node* u = w->parent();
           //n->setKey(u->key());
           //n->setValue(u->value());
 	  n->replace(u);
@@ -417,8 +373,8 @@ class map {
 
       /// @brief Destructor
       ~node() {
-        /// @todo Implement node destructor
-       // delete this; 
+        delete right;
+	delete left;
       }
 
       /// @}
