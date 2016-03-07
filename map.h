@@ -188,7 +188,10 @@ class map {
     ///         one
     iterator erase(const_iterator position) {
       /// @todo Implement erase. Utilize eraser helper.
-      return end();
+      node* n = finder(position->first);
+      node* v = n->inorder_next();
+      eraser(n);
+      return v;
     }
     /// @brief Remove element at specified position
     /// @param k Key
@@ -307,24 +310,23 @@ class map {
     node* eraser(node* n) {
       /// @todo Implement eraser helper function
       node* w;
-      if(n->left()->is_external())
-        w = n->left();
-      else if(n->right()->is_external())
-        w = n->right();
+      if(n->left->is_external())
+        w = n->left;
+      else if(n->right->is_external())
+        w = n->right;
       else
       {
-        w = n->right();
+        w = n->right;
         do{
-          w = w->left();
+          w = w->left;
           }while(w->is_internal());
-          node* u = w->parent();
-          //n->setKey(u->key());
-          //n->setValue(u->value());
-	  n->replace(u);
+          node* u = w->parent;
+	  n->replace(u->value);
       }
       sz--;
-      remove_above_external(w);
-      return nullptr;
+      node* c = w->inorder_next();
+      w->remove_above_external();
+      return c;
     }
 
     /// @}
