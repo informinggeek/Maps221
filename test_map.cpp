@@ -56,7 +56,6 @@ class map_test : public test_class {
 
     /// @brief Setup map of integers to strings
     void setup_dummy_map(map<int, string>& m) {
-      std::cout<<"Dummy_map setup begun.\n";
       m[3] = "l";
       m[1] = "H";
       m[2] = "e";
@@ -78,11 +77,6 @@ class map_test : public test_class {
       map<int, string> m;
       setup_dummy_map(m);
 
-      std::cout<<"The value at m[3] is "<<m[3]<<".\n";
-      std::cout<<"The value at m[1] is "<<m[1]<<".\n";
-      std::cout<<"The value at m[2] is "<<m[2]<<".\n";
-      std::cout<<"The value at m[5] is "<<m[5]<<".\n";
-      std::cout<<"The value at m[4] is "<<m[4]<<".\n";
 
       string val = m[5];
 
@@ -222,7 +216,7 @@ class map_test : public test_class {
     void test_copy_constructor() {
       map<int, string> m1;
       setup_dummy_map(m1);
-
+      std::cout<<"Copy constructor started.\n";
       map<int, string> m2(m1);
 
       for(auto&& x : m2)
