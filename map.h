@@ -377,11 +377,11 @@ class map {
 
       /// @brief Copy constructor
       /// @param n node to perform deep copy from
-      node(const node& n) : value(n.value), parent(nullptr), left(nullptr), right(nullptr), height(n.height) {
+      node(const node& n) : value(n.value), parent(n.parent), left(n.left), right(n.right), height(n.height) {
         /// @todo Finish implementation of this copy constructor.
         ///       Hint: left and right are not copied correctly at the moment
-	left = n.left;
-	right = n.right;
+	     //left = n.left;
+	     //right = n.right;
       }
 
       /// @brief Copy assignment - Deleted
@@ -523,6 +523,13 @@ class map {
       ///       code reusability.
       node* restructure() {
         /// @todo Implement restructuring
+        node* x = this;
+        node* y = x->parent;
+        node* z = y->parent;
+        if(x->value > y-> value)
+          rotate_left();
+        if(x-value < y->value)
+          rotate_right();
         return this;
       }
       /// @brief Set new left and right children to a node
