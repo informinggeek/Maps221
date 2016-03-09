@@ -84,7 +84,7 @@ class map {
     /// @name Iterators
     /// @{
 
-    /// @return Iterator to beginning
+    /// @return Iterator to oeginning
     iterator begin() {return iterator(root->leftmost());}
     /// @return Iterator to end
     iterator end() {return iterator(root);}
@@ -188,9 +188,8 @@ class map {
     ///         one
     iterator erase(const_iterator position) {
       /// @todo Implement erase. Utilize eraser helper.
-      node* n = finder(position->first);
-      node* v = n->inorder_next();
-      eraser(n);
+      node* v = position.n->inorder_next();
+      eraser(position.n);
       return v;
     }
     /// @brief Remove element at specified position
@@ -198,6 +197,10 @@ class map {
     /// @return Number of elements removed (in this case it is at most 1)
     size_t erase(const Key& k) {
       /// @todo Implement erase. Utilize finder and eraser helpers.
+      node* n = finder(k);
+      node* i = n->inorder_next();
+      node* e = eraser(n);
+      if(e == i) return 1;
       return 0;
     }
     /// @brief Removes all elements
@@ -208,7 +211,7 @@ class map {
       sz = 0;
     }
 
-    /// @}
+    ///
     ////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////
@@ -241,7 +244,10 @@ class map {
     /// only return 1 or 0.
     size_t count(const Key& k) const {
       /// @todo Implement count. Utilize the find operation.
-      return 0;
+      node* n = finder(k);
+      int count = 0;
+      if(n->value.first == k) ++count;
+      return count;
     }
 
     /// @}
@@ -260,7 +266,7 @@ class map {
     ///
     /// Base your algorithm off of Code Fragment 10.9 on page 436
     node* finder(const Key& k) const {		
-      node* v=root->left;;
+      node* v=root->left;
       if(v->is_external()) return v;				// if the root is external, it is the only node in the tree
       while(v->is_internal() && k != v->value.first)		// search for k
       {
@@ -310,21 +316,22 @@ class map {
     node* eraser(node* n) {
       /// @todo Implement eraser helper function
       node* w;
-      if(n->left->is_external())
-        w = n->left;
+      if(n->left->is_external()){
+        w = n->left;}
       else if(n->right->is_external())
         w = n->right;
       else
       {
         w = n->right;
-        do{
+       /* do{
           w = w->left;
-          }while(w->is_internal());
-          node* u = w->parent;
-	  n->replace(u->value);
+          }while(w->is_internal());*/
+        w = w->leftmost();
+        node* u = w->parent;
+	n->replace(u->value);
       }
       sz--;
-      node* c = w->inorder_next();
+      node* c = w->parent->inorder_next();
       w->remove_above_external();
       return c;
     }
@@ -367,6 +374,8 @@ class map {
       node(const node& n) : value(n.value), parent(nullptr), left(nullptr), right(nullptr), height(n.height) {
         /// @todo Finish implementation of this copy constructor.
         ///       Hint: left and right are not copied correctly at the moment
+	left = n.left;
+	right = n.right;
       }
 
       /// @brief Copy assignment - Deleted
