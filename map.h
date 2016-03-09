@@ -130,7 +130,9 @@ class map {
     /// element with that key and return a reference to its mapped value
     /// (constructed through default construction)
     Value& operator[](const Key& k) {
-      return inserter(std::make_pair(k, Value())).first->value.second;
+      std::pair<node*, bool> a =  inserter(std::make_pair(k, Value()));
+      a.first->left->rebalance();
+      return a.first->value.second;
     }
 
     /// @param k Input key
@@ -180,7 +182,7 @@ class map {
       std::pair<node*,bool> n = inserter(v);		// inserts the node if it does not exist, or finds where it is if it does
       if(n.second == true) return n;			// if the node did not exist, just return the positon/boolean pair
       n.first->value.second = v.second;			// if the node did exist, change its value to match the new value
-      n.first->rebalance();
+     // n.first->rebalance();
       return n;
     }
     /// @brief Remove element at specified position
@@ -191,7 +193,7 @@ class map {
       /// @todo Implement erase. Utilize eraser helper.
       node* v = position.n->inorder_next();
       eraser(position.n);
-      v->rebalance();
+    //  v->rebalance();
       return v;
     }
     /// @brief Remove element at specified position
@@ -200,11 +202,10 @@ class map {
     size_t erase(const Key& k) {
       /// @todo Implement erase. Utilize finder and eraser helpers.
       node* n = finder(k);
-      node* i = n->inorder_next();
       node* e = eraser(n);
+      //std::cout<<e->value.first<<std::endl;
       e->rebalance();
-      if(e == i) return 1;
-      return 0;
+      return 1;
     }
     /// @brief Removes all elements
     void clear() noexcept {
@@ -327,9 +328,9 @@ class map {
       node* w;
       if(n->left->is_external()){
         w = n->left;}
-      else if(n->right->is_external())
+      else if(n->right->is_external()){
         w = n->right;
-      else
+     } else
       {
         w = n->right;
        /* do{
@@ -340,9 +341,7 @@ class map {
 	n->replace(u->value);
       }
       sz--;
-      node* c = w->parent->inorder_next();
-      w->remove_above_external();
-      return c;
+      return w->remove_above_external();
     }
 
     /// @}
@@ -501,13 +500,16 @@ class map {
       void rebalance() {
         /// @todo Implement resbalancing
 	node* z = this;
-	while(!(z->is_root()))
+	while(!(z->parent->is_root()))
 	{
 	  z = z->parent;
 	  z->set_height();
+          std::cout<<"Height of Node "<<z->value.first<<" is "<<z->get_height()<<std::endl;
 	  if(!z->balanced())
 	  {
-	    node* x = tall_grand_child();
+	    std::cout<<"Need to be rebalanced on node: "<<z->value.first<<std::endl;
+	    node* x = z->tall_grand_child();
+std::cout<<"Tallest grandchild is: "<<x->value.first<<std::endl;
 	    z = x->restructure();
 	    z->left->set_height();
 	    z->right->set_height();
@@ -528,11 +530,40 @@ class map {
         /// @todo Implement restructuring
         node* x = this;
         node* y = x->parent;
-        if(x->value.first > y->value.first)
-          rotate_left();
-        if(x->value.first < y->value.first)
-          rotate_right();
-        return this;
+	node* z = y->parent;
+std::cout<<z->value.first<<std::endl;
+	node* a = nullptr;
+        /*if(x->value.first > y->value.first){
+          a = y->rotate_left();
+	  if(x->parent == z)
+	    a = z->rotate_right(); 
+	}
+        else if(x->value.first < y->value.first){
+          a = y->rotate_right();
+	  if(x->parent == z)
+	    a = z->rotate_left();
+	}*/
+	if(z->value.first < y->value.first && y->value.first > x->value.first)
+	{
+		y->rotate_right();
+		a = z->rotate_left();
+	}
+	else if(z->value.first > y->value.first && y->value.first < x->value.first)
+	{
+		y->rotate_left();
+		a = z->rotate_right();
+	}
+	else if(z->value.first < y->value.first && y->value.first < x->value.first)
+	{
+		a = z->rotate_left();
+	}
+	else if(z->value.first > y->value.first && y->value.first > x->value.first)
+	{
+		a = z->rotate_right();
+	}
+
+	std::cout<<a->value.first<<std::endl;
+        return a;
       }
       /// @brief Set new left and right children to a node
       /// @param New left and right children
@@ -548,6 +579,7 @@ class map {
       /// @brief Rotate right a node
       /// @return Node structure after right rotation
       node* rotate_right() {
+std::cout<<"Right.\n";
         node* p = this;
         node* c = p->left;
         node* s = c->right;
@@ -561,12 +593,14 @@ class map {
         p->set_children(s,p->right);
         p->set_height();
         c->set_height();
+std::cout<<"Finished.\n";
         return c;
       }
 
       /// @brief Rotate left a node
       /// @return Node structure after left rotation
       node* rotate_left() {
+std::cout<<"Left.\n";
         node* p = this;
         node* c = p->right;
         node* s = c->left;
@@ -580,6 +614,7 @@ class map {
         p->set_children(p->left,s);
         p->set_height();
         c->set_height();
+	std::cout<<"finished.\n";
         return c;
       }
 
@@ -727,7 +762,7 @@ class map {
           /// @}
           //////////////////////////////////////////////////////////////////////
 
-        private:
+        //private:
           node* n; ///< Map node
 
           friend class map;
