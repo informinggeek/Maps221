@@ -501,13 +501,12 @@ class map {
       void rebalance() {
         /// @todo Implement resbalancing
 	node* z = this;
-	while(!(z->is_root()));
+	while(!(z->is_root()))
 	{
 	  z = z->parent;
 	  z->set_height();
 	  if(!z->balanced())
 	  {
-	    std::cout<<"Unbalanced?\n";
 	    node* x = tall_grand_child();
 	    z = x->restructure();
 	    z->left->set_height();
@@ -529,10 +528,9 @@ class map {
         /// @todo Implement restructuring
         node* x = this;
         node* y = x->parent;
-        node* z = y->parent;
         if(x->value.first > y->value.first)
           rotate_left();
-        if(x-value.first < y->value.first)
+        if(x->value.first < y->value.first)
           rotate_right();
         return this;
       }
