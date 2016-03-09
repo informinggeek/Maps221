@@ -174,7 +174,6 @@ class map_test : public test_class {
 
       assert_msg(m.size() == 5 && i.first == j && !i.second,
           "Insert exists failed.");
-      std::cout<<"Insert exists.\n";
     }
 
     /// @brief Test insertion when element is not already in map
@@ -212,7 +211,6 @@ class map_test : public test_class {
 
       assert_msg(i == 1 && m.size() == 4, "Erase key failed.");
       m.erase(4);
-      std::cout<<"About to check for balance.\n";
       if(m.balanced()) std::cout<<"Tree balanced successfully.\n";
       else std::cout<<"Tree is not balanced.\n";
     }

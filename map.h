@@ -1,3 +1,7 @@
+//Programming Assignment 2
+//Name: Christopher Madison || Nathan Powell
+//UIN: 524000795 || 724000737
+
 #ifndef _MAP_H_
 #define _MAP_H_
 
@@ -182,7 +186,7 @@ class map {
       std::pair<node*,bool> n = inserter(v);		// inserts the node if it does not exist, or finds where it is if it does
       if(n.second == true) return n;			// if the node did not exist, just return the positon/boolean pair
       n.first->value.second = v.second;			// if the node did exist, change its value to match the new value
-     // n.first->rebalance();
+      n.first->rebalance();
       return n;
     }
     /// @brief Remove element at specified position
@@ -193,7 +197,7 @@ class map {
       /// @todo Implement erase. Utilize eraser helper.
       node* v = position.n->inorder_next();
       eraser(position.n);
-    //  v->rebalance();
+      v->rebalance();
       return v;
     }
     /// @brief Remove element at specified position
@@ -203,7 +207,6 @@ class map {
       /// @todo Implement erase. Utilize finder and eraser helpers.
       node* n = finder(k);
       node* e = eraser(n);
-      //std::cout<<e->value.first<<std::endl;
       e->rebalance();
       return 1;
     }
@@ -330,7 +333,7 @@ class map {
         w = n->left;}
       else if(n->right->is_external()){
         w = n->right;
-     } else
+     }else
       {
         w = n->right;
        /* do{
@@ -338,7 +341,7 @@ class map {
           }while(w->is_internal());*/
         w = w->leftmost();
         node* u = w->parent;
-	n->replace(u->value);
+	      n->replace(u->value);
       }
       sz--;
       return w->remove_above_external();
@@ -383,11 +386,11 @@ class map {
         /// @todo Finish implementation of this copy constructor.
         ///       Hint: left and right are not copied correctly at the moment
 	       if(n.is_internal())
-        {
-          node* left = new node(*n.left);
-          node* right = new node(*n.right);
-          set_children(left, right);
-        }
+         {
+          node* l = new node(*n.left);
+          node* r = new node(*n.right);
+          set_children(l, r);
+         }
       }
 
       /// @brief Copy assignment - Deleted
@@ -503,23 +506,20 @@ class map {
       ///       set_height()
       void rebalance() {
         /// @todo Implement resbalancing
-	node* z = this;
-	while(!(z->parent->is_root()))
-	{
-	  z = z->parent;
-	  z->set_height();
-          std::cout<<"Height of Node "<<z->value.first<<" is "<<z->get_height()<<std::endl;
-	  if(!z->balanced())
-	  {
-	    std::cout<<"Need to be rebalanced on node: "<<z->value.first<<std::endl;
-	    node* x = z->tall_grand_child();
-std::cout<<"Tallest grandchild is: "<<x->value.first<<std::endl;
-	    z = x->restructure();
-	    z->left->set_height();
-	    z->right->set_height();
-	    z->set_height();
-	  }
-	}
+        node* z = this;
+	      while(!(z->parent->is_root()))
+	      {
+	        z = z->parent;
+	        z->set_height();
+	        if(!z->balanced())
+	        {
+	          node* x = z->tall_grand_child();
+	          z = x->restructure();
+	          z->left->set_height();
+	          z->right->set_height();
+	          z->set_height();
+	        }
+	      }
       }
 
       /// @brief Restructuring the tri-node structure's balance where
@@ -534,39 +534,26 @@ std::cout<<"Tallest grandchild is: "<<x->value.first<<std::endl;
         /// @todo Implement restructuring
         node* x = this;
         node* y = x->parent;
-	node* z = y->parent;
-std::cout<<z->value.first<<std::endl;
-	node* a = nullptr;
-        /*if(x->value.first > y->value.first){
-          a = y->rotate_left();
-	  if(x->parent == z)
-	    a = z->rotate_right(); 
-	}
-        else if(x->value.first < y->value.first){
-          a = y->rotate_right();
-	  if(x->parent == z)
-	    a = z->rotate_left();
-	}*/
-	if(z->value.first < y->value.first && y->value.first > x->value.first)
-	{
-		y->rotate_right();
-		a = z->rotate_left();
-	}
-	else if(z->value.first > y->value.first && y->value.first < x->value.first)
-	{
-		y->rotate_left();
-		a = z->rotate_right();
-	}
-	else if(z->value.first < y->value.first && y->value.first < x->value.first)
-	{
-		a = z->rotate_left();
-	}
-	else if(z->value.first > y->value.first && y->value.first > x->value.first)
-	{
-		a = z->rotate_right();
-	}
-
-	std::cout<<a->value.first<<std::endl;
+	      node* z = y->parent;  
+	      node* a = nullptr;
+	      if(z->value.first < y->value.first && y->value.first > x->value.first)
+	      {
+		       y->rotate_right();
+		       a = z->rotate_left();
+	      } 
+	      else if(z->value.first > y->value.first && y->value.first < x->value.first)
+	      {
+		       y->rotate_left();
+		       a = z->rotate_right();
+	      }
+	      else if(z->value.first < y->value.first && y->value.first < x->value.first)
+	      {
+		       a = z->rotate_left();
+	      }
+	      else if(z->value.first > y->value.first && y->value.first > x->value.first)
+	      {
+		       a = z->rotate_right();
+	      }
         return a;
       }
       /// @brief Set new left and right children to a node
@@ -583,7 +570,6 @@ std::cout<<z->value.first<<std::endl;
       /// @brief Rotate right a node
       /// @return Node structure after right rotation
       node* rotate_right() {
-std::cout<<"Right.\n";
         node* p = this;
         node* c = p->left;
         node* s = c->right;
@@ -597,14 +583,12 @@ std::cout<<"Right.\n";
         p->set_children(s,p->right);
         p->set_height();
         c->set_height();
-std::cout<<"Finished.\n";
         return c;
       }
 
       /// @brief Rotate left a node
       /// @return Node structure after left rotation
       node* rotate_left() {
-std::cout<<"Left.\n";
         node* p = this;
         node* c = p->right;
         node* s = c->left;
@@ -618,7 +602,6 @@ std::cout<<"Left.\n";
         p->set_children(p->left,s);
         p->set_height();
         c->set_height();
-	std::cout<<"finished.\n";
         return c;
       }
 
