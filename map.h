@@ -250,6 +250,12 @@ class map {
       return count;
     }
 
+
+    bool balanced()
+    {
+	return root->left->balanced();
+    }
+
     /// @}
     ////////////////////////////////////////////////////////////////////////////
 
@@ -491,6 +497,20 @@ class map {
       ///       set_height()
       void rebalance() {
         /// @todo Implement resbalancing
+	node* z = this;
+	while(!(z == root->left));
+	{
+	  z = z->parent;
+	  z->setHeight();
+	  if(!z->balanced())
+	  {
+	    node* x = tall_grand_child();
+	    z = x->restructure();
+	    z->left->set_height();
+	    z->right->set_height();
+	    z->set_height();
+	  }
+	}
       }
 
       /// @brief Restructuring the tri-node structure's balance where
@@ -505,7 +525,6 @@ class map {
         /// @todo Implement restructuring
         return this;
       }
-
       /// @brief Set new left and right children to a node
       /// @param New left and right children
       /// @return Node with the resetted children
