@@ -210,6 +210,9 @@ class map_test : public test_class {
       size_t i = m.erase(5);
 
       assert_msg(i == 1 && m.size() == 4, "Erase key failed.");
+      m.erase(4);
+      if(m.balanced()) std::cout<<"Tree balanced successfully.\n";
+      else std::cout<<"Tree is not balanced.\n";
     }
 
     /// @brief Test copy constuction
