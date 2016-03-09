@@ -506,9 +506,9 @@ class map {
         node* x = this;
         node* y = x->parent;
         node* z = y->parent;
-        if(x->value > y-> value)
+        if(x->value.first > y->value.first)
           rotate_left();
-        if(x-value < y->value)
+        if(x-value.first < y->value.first)
           rotate_right();
         return this;
       }
