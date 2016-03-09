@@ -379,11 +379,15 @@ class map {
 
       /// @brief Copy constructor
       /// @param n node to perform deep copy from
-      node(const node& n) : value(n.value), parent(n.parent), left(n.left), right(n.right), height(n.height) {
+      node(const node& n) : value(n.value), parent(nullptr), left(nullptr), right(nullptr), height(n.height) {
         /// @todo Finish implementation of this copy constructor.
         ///       Hint: left and right are not copied correctly at the moment
-	     //left = n.left;
-	     //right = n.right;
+	       if(n.is_internal())
+        {
+          node* left = new node(*n.left);
+          node* right = new node(*n.right);
+          set_children(left, right);
+        }
       }
 
       /// @brief Copy assignment - Deleted
