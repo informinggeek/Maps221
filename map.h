@@ -180,6 +180,7 @@ class map {
       std::pair<node*,bool> n = inserter(v);		// inserts the node if it does not exist, or finds where it is if it does
       if(n.second == true) return n;			// if the node did not exist, just return the positon/boolean pair
       n.first->value.second = v.second;			// if the node did exist, change its value to match the new value
+      n.first->rebalance();
       return n;
     }
     /// @brief Remove element at specified position
@@ -190,6 +191,7 @@ class map {
       /// @todo Implement erase. Utilize eraser helper.
       node* v = position.n->inorder_next();
       eraser(position.n);
+      v->rebalance();
       return v;
     }
     /// @brief Remove element at specified position
@@ -200,6 +202,7 @@ class map {
       node* n = finder(k);
       node* i = n->inorder_next();
       node* e = eraser(n);
+      e->rebalance();
       if(e == i) return 1;
       return 0;
     }
@@ -498,12 +501,13 @@ class map {
       void rebalance() {
         /// @todo Implement resbalancing
 	node* z = this;
-	while(!(z == root->left));
+	while(!(z->is_root()));
 	{
 	  z = z->parent;
-	  z->setHeight();
+	  z->set_height();
 	  if(!z->balanced())
 	  {
+	    std::cout<<"Unbalanced?\n";
 	    node* x = tall_grand_child();
 	    z = x->restructure();
 	    z->left->set_height();
