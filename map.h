@@ -182,7 +182,7 @@ class map {
       std::pair<node*,bool> n = inserter(v);		// inserts the node if it does not exist, or finds where it is if it does
       if(n.second == true) return n;			// if the node did not exist, just return the positon/boolean pair
       n.first->value.second = v.second;			// if the node did exist, change its value to match the new value
-     // n.first->rebalance();
+      n.first->rebalance();
       return n;
     }
     /// @brief Remove element at specified position
@@ -193,7 +193,7 @@ class map {
       /// @todo Implement erase. Utilize eraser helper.
       node* v = position.n->inorder_next();
       eraser(position.n);
-    //  v->rebalance();
+      v->rebalance();
       return v;
     }
     /// @brief Remove element at specified position
