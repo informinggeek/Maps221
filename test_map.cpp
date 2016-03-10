@@ -87,7 +87,7 @@ class map_test : public test_class {
     void test_element_access_operator_not_exists() {
       map<int, string> m;
       setup_dummy_map(m);
-
+std::cout<<"Insert 7.\n";
       string val = m[7];
 
       assert_msg(val == "", "Element access operator not exists failed");
@@ -208,9 +208,10 @@ class map_test : public test_class {
       setup_dummy_map(m);
 
       size_t i = m.erase(5);
-
+      map<int, string>::iterator j = m.find(3);
       assert_msg(i == 1 && m.size() == 4, "Erase key failed.");
-      m.erase(4);
+
+      if(m.balanced()) std::cout<<"Tree is balanced.\n";
       if(m.balanced()) std::cout<<"Tree balanced successfully.\n";
       else std::cout<<"Tree is not balanced.\n";
     }
