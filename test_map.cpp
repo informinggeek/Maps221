@@ -209,15 +209,10 @@ std::cout<<"Insert 7.\n";
 
       size_t i = m.erase(5);
       map<int, string>::iterator j = m.find(3);
-std::cout<<"First erase.\n";
       assert_msg(i == 1 && m.size() == 4, "Erase key failed.");
-      m.erase(4);
-<<<<<<< HEAD
 
       if(m.balanced()) std::cout<<"Tree is balanced.\n";
-=======
       if(m.balanced()) std::cout<<"Tree balanced successfully.\n";
->>>>>>> upstream/master
       else std::cout<<"Tree is not balanced.\n";
     }
 
